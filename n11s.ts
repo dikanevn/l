@@ -9,5 +9,5 @@ async function getMintInfo(mintAddress) {
     console.log("Mint Account Data:", accountInfo.value.data);
 }
 
-const mintAddress = "75Mpk7mkBD482EnxtK6zsC7G4HZhp7Rp5TSzQaFx2w2y"; // Подставь свой
+const mintAddress = "5ud9zyD5M9Tf96HYe1hhNDFaqJRC7hMy6hL2ojytBPT7"; // Подставь свой
 getMintInfo(mintAddress);

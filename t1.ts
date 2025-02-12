@@ -81,7 +81,7 @@ async function transferProgrammableNFT() {
     umi.use(keypairIdentity(umiKeypair));
 
     // Задаем идентификатор mNFT (pNFT). Замените этот mint id на реальный, если необходимо.
-    const mintId = publicKey("75Mpk7mkBD482EnxtK6zsC7G4HZhp7Rp5TSzQaFx2w2y");
+    const mintId = publicKey("5XriJDmohoW95Y1d8gx4c2AmU2MnTtVkY91LDKXSkwe7");
 
     // Получаем pNFT Asset с привязанным токен-аккаунтом владельца (текущего identity)
     const assetWithToken = await fetchDigitalAssetWithAssociatedToken(
