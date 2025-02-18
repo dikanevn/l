@@ -1,20 +1,20 @@
 Параметры запуска:
-  Адрес владельца: 3HE6EtGGxMRBuqqhz2gSs3TDRXebSc8HDDikZd1FYyJj
-  Mint-адрес токена: 6gn3GrnKRHdf1qmhHepGWALkDLeo3H5LMnf3jmvTjAkp
-(node:275183) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+  Адрес владельца: GDi7rtknaEdvgGrm9qpXbF54ZGZMGezmXLky2VQac2c6
+  Mint-адрес токена: HAU9DidF8mNswhzHoNATJBvBu9JaJroDphJeztDyxDLV
+(node:343709) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 
 === Ассоциированный токен-аккаунт (ATA) ===
-ATA: D5upAdKN52wQd7n3wcDdys4zvTeMuayzk6g4HeQ3bVme
+ATA: 9wk4Uer2PTSRFhnkJa7q6AdUMM1Xa4x1Up9s5QWdcGre
 
 === Информация об аккаунте mint ===
 Mint Account Data: {
   "parsed": {
     "info": {
       "decimals": 0,
-      "freezeAuthority": "48WR8gvEu545kB5wF1ZtZoGLaf9uY3h24tMXTP3vnkf9",
+      "freezeAuthority": "GDi7rtknaEdvgGrm9qpXbF54ZGZMGezmXLky2VQac2c6",
       "isInitialized": true,
-      "mintAuthority": "48WR8gvEu545kB5wF1ZtZoGLaf9uY3h24tMXTP3vnkf9",
+      "mintAuthority": "GDi7rtknaEdvgGrm9qpXbF54ZGZMGezmXLky2VQac2c6",
       "supply": "1"
     },
     "type": "mint"
@@ -24,20 +24,21 @@ Mint Account Data: {
 }
 
 === Информация о токен-аккаунте (ATA) ===
-Mint: 6gn3GrnKRHdf1qmhHepGWALkDLeo3H5LMnf3jmvTjAkp
-Owner: 3HE6EtGGxMRBuqqhz2gSs3TDRXebSc8HDDikZd1FYyJj
+Mint: HAU9DidF8mNswhzHoNATJBvBu9JaJroDphJeztDyxDLV
+Owner: GDi7rtknaEdvgGrm9qpXbF54ZGZMGezmXLky2VQac2c6
 Amount: 1
 Delegate: нет
-State: frozen
+State: initialized
 Is Native: false
 Delegated Amount: 0
 Close Authority: нет
 
 === Метаданные цифрового актива ===
-Metadata PDA: CxroDZDnYcWiFv3QzHfMacResUV7duUfbpaZhx4hJ8ni,254
-Master Edition PDA: 48WR8gvEu545kB5wF1ZtZoGLaf9uY3h24tMXTP3vnkf9,254
+Metadata PDA: DFfLrThCLfVgqh29qCLATAvfZz5zxZcPVZgnrRDyeeF7,255
+Master Edition PDA: 6WA5YHvH525jczcjaraMVZctQRNxfaeuqckatYbd97cc,254
 
 === Детали цифрового актива ===
+Данные цифрового актива не получены.
 
 Всё вычислено. Готово.
 Завершено успешно.
