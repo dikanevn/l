@@ -34,21 +34,33 @@ process.on('exit', () => {
 });
 
 async function main() {
-  // Проверка обязательных аргументов: адрес владельца и mint-адрес токена
-  if (process.argv.length < 4) {
-    console.error("Пожалуйста, укажите адрес владельца и mint-адрес токена в аргументах.");
+  // Проверка обязательных аргументов: параметр сети, адрес владельца и mint-адрес токена
+  if (process.argv.length < 5) {
+    console.error("Пожалуйста, укажите <d|m> <адрес владельца> <mint-адрес токена>");
     process.exit(1);
   }
 
-  const ownerAddress = process.argv[2];
-  const mintAddress = process.argv[3];
+  // Новый блок: выбор сети по первому параметру
+  const networkArg = process.argv[2];
+  let network: "devnet" | "mainnet-beta";
+  if (networkArg === "d") {
+    network = "devnet";
+  } else if (networkArg === "m") {
+    network = "mainnet-beta";
+  } else {
+    throw new Error("Неверный параметр сети. Используйте 'd' для devnet или 'm' для mainnet");
+  }
+
+  // Сдвигаем индексы: второй параметр - адрес владельца, третий - mint-адрес токена
+  const ownerAddress = process.argv[3];
+  const mintAddress = process.argv[4];
 
   console.log("Параметры запуска:");
   console.log("  Адрес владельца:", ownerAddress);
   console.log("  Mint-адрес токена:", mintAddress);
 
-  // Создаем UMI instance для вычислений, связанных с Metaplex
-  const umi = await createUmi("https://api.devnet.solana.com");
+  // Создаем UMI instance для вычислений, связанных с Metaplex, используя выбранную сеть
+  const umi = await createUmi(clusterApiUrl(network));
 
   // Преобразуем адреса в PublicKey (используя @solana/web3.js)
   const ownerPk = new PublicKey(ownerAddress);
@@ -60,7 +72,7 @@ async function main() {
   console.log("ATA:", ata.toString());
 
   // 2. Получаем информацию об аккаунте mint (как в n11s.ts)
-  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  const connection = new Connection(clusterApiUrl(network), "confirmed");
   const mintAccountInfo = await connection.getParsedAccountInfo(mintPk);
   console.log("\n=== Информация об аккаунте mint ===");
   if (mintAccountInfo.value) {

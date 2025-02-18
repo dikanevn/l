@@ -31,7 +31,7 @@ const collectionMintAddress = process.argv[4];
 const nftMintPublicKey = new PublicKey(nftMintAddress);
 const collectionMintPublicKey = new PublicKey(collectionMintAddress);
 
-async function verifyNFTCollection() {
+async function unverifyNFTCollection() {
   // Парсинг секретного ключа и создание Keypair
   const secretKey = JSON.parse(process.env.PAYER_SECRET_KEY) as number[];
   const payer = Keypair.fromSecretKey(new Uint8Array(secretKey));
@@ -43,7 +43,7 @@ async function verifyNFTCollection() {
   // Инициализируем Metaplex с использованием keypairIdentity
   const metaplex = Metaplex.make(connection).use(keypairIdentity(payer));
 
-  // Проверяем, что NFT уже имеет установленную коллекцию и она соответствует указанной.
+  // Получаем данные NFT до отвязки коллекции
   const nftBefore = await metaplex.nfts().findByMint({ mintAddress: nftMintPublicKey });
   if (!nftBefore.collection) {
     throw new Error("NFT не имеет коллекционной информации");
@@ -51,26 +51,26 @@ async function verifyNFTCollection() {
   if (nftBefore.collection.address.toString() !== collectionMintPublicKey.toString()) {
     throw new Error("Коллекция NFT не соответствует указанной коллекции");
   }
-  console.log("NFT до верификации:", {
+  console.log("NFT до отвязки коллекции:", {
     mint: nftBefore.address.toString(),
     collection: nftBefore.collection.address.toString(),
     verified: nftBefore.collection.verified,
   });
 
-  // Вызываем метод верификации коллекции.
-  await metaplex.nfts().verifyCollection({ 
-    mintAddress: nftMintPublicKey, 
-    collectionMintAddress: collectionMintPublicKey 
+  // Вызываем метод отвязки коллекции (unverifyCollection)
+  await metaplex.nfts().unverifyCollection({
+    mintAddress: nftMintPublicKey,
+    collectionMintAddress: collectionMintPublicKey,
   });
 
-  // Запрашиваем обновлённые данные NFT для проверки статуса верификации.
+  // Запрашиваем обновлённые данные NFT для проверки статуса отвязки коллекции.
   const updatedNft = await metaplex.nfts().findByMint({ mintAddress: nftMintPublicKey });
-  console.log("NFT после верификации:");
+  console.log("NFT после отвязки коллекции:");
   console.log("Mint адрес NFT:", updatedNft.address.toString());
   console.log("Коллекция:", updatedNft.collection?.address.toString());
-  console.log("Верифицирован:", updatedNft.collection?.verified);
+  console.log("Верифицирована:", updatedNft.collection?.verified);
 }
 
-verifyNFTCollection().catch((error) => {
-  console.error("Ошибка при верификации коллекции:", error);
+unverifyNFTCollection().catch((error) => {
+  console.error("Ошибка при отвязке коллекции:", error);
 }); 

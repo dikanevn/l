@@ -4,6 +4,20 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+// Новый блок: выбор сети по аргументу командной строки
+if (process.argv.length < 3) {
+  throw new Error("Укажите параметр сети: 'd' для devnet или 'm' для mainnet");
+}
+const networkArg = process.argv[2];
+let network: "devnet" | "mainnet-beta";
+if (networkArg === "d") {
+  network = "devnet";
+} else if (networkArg === "m") {
+  network = "mainnet-beta";
+} else {
+  throw new Error("Неверный параметр сети. Используйте 'd' для devnet или 'm' для mainnet");
+}
+
 async function createCollectionPNFT() {
   // Проверка наличия секретного ключа в переменных окружения
   if (!process.env.PAYER_SECRET_KEY) {
@@ -15,8 +29,8 @@ async function createCollectionPNFT() {
   const payer = Keypair.fromSecretKey(new Uint8Array(secretKey));
   console.log("Payer публичный ключ:", payer.publicKey.toString());
 
-  // Подключаемся к сети Devnet
-  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  // Подключаемся к выбранной сети (используем network переменную)
+  const connection = new Connection(clusterApiUrl(network), "confirmed");
 
   // Инициализируем Metaplex (здесь используем keypairIdentity как и ранее)
   const metaplex = Metaplex.make(connection).use(keypairIdentity(payer));
@@ -25,9 +39,9 @@ async function createCollectionPNFT() {
   // Важно: для коллекционного NFT устанавливаем параметр isCollection в true
   const { nft } = await metaplex.nfts().create({
     uri: "https://arweave.net/collection_metadata", // Замените на реальный URI метаданных для коллекции
-    name: "ProgCollectionNFTa",
+    name: "PCollnNFTb",
     sellerFeeBasisPoints: 0, // Обычно для коллекций роялти не применяют, но настройте по необходимости
-    symbol: "PCOLLa",
+    symbol: "PCOLLb",
     creators: [
       {
         address: payer.publicKey,

@@ -4,36 +4,47 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+// Проверяем наличие обязательных переменных и параметров командной строки
+if (!process.env.PAYER_SECRET_KEY) {
+  throw new Error("PAYER_SECRET_KEY не установлен");
+}
+if (process.argv.length < 4) {
+  throw new Error("Использование: <d|m> <адрес коллекции>");
+}
+
+// Новый блок: выбор сети по первому параметру
+const networkArg = process.argv[2];
+let network: "devnet" | "mainnet-beta";
+if (networkArg === "d") {
+  network = "devnet";
+} else if (networkArg === "m") {
+  network = "mainnet-beta";
+} else {
+  throw new Error("Неверный параметр сети. Используйте 'd' для devnet или 'm' для mainnet");
+}
+
+// Получаем адрес коллекции из второго параметра
+const collectionAddress = process.argv[3];
+const collectionPublicKey = new PublicKey(collectionAddress);
+
 async function mintNFTToCollection() {
-  // Проверяем наличие обязательных переменных
-  if (!process.env.PAYER_SECRET_KEY) {
-    throw new Error("PAYER_SECRET_KEY не установлен");
-  }
-  if (process.argv.length < 3) {
-    throw new Error("Укажите адрес коллекции в качестве первого параметра");
-  }
-
-  // Получаем адрес коллекции из аргументов командной строки
-  const collectionAddress = process.argv[2];
-  const collectionPublicKey = new PublicKey(collectionAddress);
-
   // Парсинг секретного ключа и создание Keypair
   const secretKey = JSON.parse(process.env.PAYER_SECRET_KEY) as number[];
   const payer = Keypair.fromSecretKey(new Uint8Array(secretKey));
   console.log("Payer публичный ключ:", payer.publicKey.toString());
 
-  // Подключаемся к сети Devnet
-  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  // Подключаемся к выбранной сети (используем network переменную)
+  const connection = new Connection(clusterApiUrl(network), "confirmed");
 
   // Инициализируем Metaplex с keypairIdentity
   const metaplex = Metaplex.make(connection).use(keypairIdentity(payer));
 
   // Создаём NFT, привязанный к коллекции
   const { nft } = await metaplex.nfts().create({
-    uri: "https://arweave.net/your-nft-metadata", // Замените на реальный URI метаданных NFT
-    name: "ProgNFTInCollection",
-    sellerFeeBasisPoints: 500, // 5% роялти (при необходимости измените)
-    symbol: "PNFTInC",
+    uri: "https://a.n/e", // Замените на реальный URI метаданных NFT
+    name: "pNFTinColE",
+    sellerFeeBasisPoints: 700, // 700=7% роялти (при необходимости измените)
+    symbol: "pNFTInColE",
     creators: [
       {
         address: payer.publicKey,
@@ -45,7 +56,6 @@ async function mintNFTToCollection() {
     tokenStandard: 4,
     ruleSet: null,
     // Привязка NFT к коллекции:
-    // Передаём публичный ключ коллекции напрямую, т.к. ожидается тип PublicKey.
     collection: collectionPublicKey,
   });
 
